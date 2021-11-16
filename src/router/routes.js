@@ -8,22 +8,27 @@ import Register from '@/pages/Register'
 
 
 
-export default [
-       {
-            path:'/',
-            component:Home
-        },
-        {   
-            name:'search',
-            path:'/search/:keyword',
-            component:Search
-        },
-        {
-            path:'/login',
-            component:Login
-        },
-        {
-            path:'/register',
-            component:Register
-        },
-    ]
+export default [{
+        path: '/',
+        component: Home
+    },
+    {
+        name: 'search',
+        path: '/search/:keyword',
+        component: Search
+    },
+    {
+        path: '/login',
+        component: Login,
+        meta: {
+            isHideFooter: true
+        }
+    },
+    {
+        path: '/register',
+        component: Register,
+        meta: {
+            isHideFooter: true
+        }
+    },
+]

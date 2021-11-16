@@ -37,8 +37,8 @@
             type="text"
             id="autocomplete"
             class="input-error input-xxlarge"
-            v-model="keyword"/>
-          <button class="sui-btn btn-xlarge btn-danger" type="button" @click="search">
+            v-model.trim="keyword"/>
+          <button class="sui-btn btn-xlarge btn-danger"  @click.prevent="search">
             搜索
           </button>
         </form>
@@ -58,12 +58,21 @@ export default {
   methods:{
       search(){
         //   this.$router.push('/search/${this.keyword}')
-          this.$router.push({
-              name:'search',
-              params:{
-                  keyword:this.keyword
-              }
-          })
+        const location = {
+          name:'search',
+        }
+
+        //只有数据时，才携带params参数
+        if(this.keyword){
+          location.params = {
+            //路由必须配置name
+            keyword: this.keyword
+          }
+          location.query ={
+            keyword2: this.keyword.toUpperCase()
+          }
+        }
+          this.$router.push(location)
       }
   }
 };
