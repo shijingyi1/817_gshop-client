@@ -6,6 +6,6 @@ import ajax from './ajax';
 //首页三级分类
 //  /api/product/getBaseCategoryList  GET
 
-export function getCategoryList() {
+export function reqCategoryList() {
     return ajax.get('/product')
 }

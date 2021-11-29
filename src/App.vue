@@ -17,9 +17,11 @@ export default {
   name: 'App',
   mounted(){
     //异步获取三级分类的列表
-    getCategoryList().then(result =>{
-      console.log(result)
-    })
+    // getCategoryList().then(result =>{
+    //   console.log(result)
+    // })
+
+    this.$store.dispatch(getCatecoryList)
   },
   components:{
     Header,
