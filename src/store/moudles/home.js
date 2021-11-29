@@ -7,19 +7,23 @@ const state = {
 
 const mutations = {
     // 接受保存分类列表
-    RECEIVE_CATEGORY_LIST(state,categoryList){
-        state.categoryList = categoryList.splice(0,15)
+    RECEIVE_CATEGORY_LIST(state, categoryList) {
+        console.log(222)
+        state.categoryList = categoryList.splice(0, 15)
 
     }
 }
 
 
 const actions = {
-    async getCatecoryList({commit}){
-        const result =await reqCategoryList()
-        if (result.code === 200) {
-            const categoryList = result.data
-            commit('RECEIVE_CATEGORY_LIST',categoryList)
+    async getCatecoryList({ commit }) {
+        const result = await reqCategoryList()
+        console.log(result[0].code)
+        console.log(result[0].data)
+        if (result[0].code === 200) {
+            console.log(1)
+            const categoryList = result[0].data
+            commit('RECEIVE_CATEGORY_LIST', categoryList)
         }
     }
 }

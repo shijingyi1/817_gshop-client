@@ -10,7 +10,7 @@
 <script>
 import Header from './components/Header'
 import Footer from './components/Footer'
-import {getCategoryList} from './api'
+// import {getCategoryList} from './api'
 
 
 export default {
@@ -21,7 +21,7 @@ export default {
     //   console.log(result)
     // })
 
-    this.$store.dispatch(getCatecoryList)
+    this.$store.dispatch('getCatecoryList')
   },
   components:{
     Header,
