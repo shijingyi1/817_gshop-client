@@ -16,17 +16,17 @@
         <div class="all-sort-list2">
           <div class="item" v-for="c1 in categoryList" :key="c1.categoryId">
             <h3>
-              <a href="">{{c1.categoryName}}</a>
+              <router-link :to="`/search?categoryName=${c1.categoryName}&categoryId=${c1.categoryId}`">{{c1.categoryName}}</router-link>
             </h3>
             <div class="item-list clearfix">
               <div class="subitem">
                 <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
                   <dt>
-                    <a href="">{{c2.categoryName}}</a>
+                    <router-link :to="`/search?categoryName=${c2.categoryName}&categoryId=${c2.categoryId}`">{{c2.categoryName}}</router-link>
                   </dt>
                   <dd>
                     <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                      <a href="">{{c3.categoryName}}</a>
+                      <router-link :to="`/search?categoryName=${c3.categoryName}&categoryId=${c3.categoryId}`">{{c3.categoryName}}</router-link>
                     </em>
                   </dd>
                 </dl>
@@ -40,12 +40,20 @@
 </template>
 
 <script>
+
+import {mapState} from 'vuex'
 export default {
   name: "TypeNav",
   computed:{
-    categoryList(){
-      return this.$store.state.home.categoryList
-    }
+    //方法一：
+    // categoryList(){
+    //   return this.$store.state.home.categoryList
+    // }
+
+    //方法二：
+    ...mapState({
+      categoryList: state => state.home.categoryList
+    })
   }
 };
 </script>

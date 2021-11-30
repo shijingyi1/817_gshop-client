@@ -18,11 +18,11 @@ const mutations = {
 const actions = {
     async getCatecoryList({ commit }) {
         const result = await reqCategoryList()
-        console.log(result[0].code)
-        console.log(result[0].data)
-        if (result[0].code === 200) {
+        console.log(result.code)
+        console.log(result.data)
+        if (result.code === 200) {
             console.log(1)
-            const categoryList = result[0].data
+            const categoryList = result.data
             commit('RECEIVE_CATEGORY_LIST', categoryList)
         }
     }
