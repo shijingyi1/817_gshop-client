@@ -12,21 +12,24 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <div class="all-sort-list2">
-          <div class="item" v-for="c1 in categoryList" :key="c1.categoryId">
+      <div class="sort" @mouseleave="currentIndex=-1">
+        <div class="all-sort-list2" @click="toSearch">
+          <div class="item" v-for="(c1, index) in categoryList" :key="c1.categoryId" :class="{active:currentIndex===index}" @mouseenter="showSubList(index)">
             <h3>
-              <router-link :to="`/search?categoryName=${c1.categoryName}&categoryId=${c1.categoryId}`">{{c1.categoryName}}</router-link>
+              <a href="javascript:" :data-categoryName="c1.categoryName" :data-category1Id="c1.categoryId">{{c1.categoryName}}</a>
+              <!-- <router-link :to="`/search?categoryName=${c1.categoryName}&categoryId=${c1.categoryId}`">{{c1.categoryName}}</router-link> -->
             </h3>
             <div class="item-list clearfix">
               <div class="subitem">
                 <dl class="fore" v-for="c2 in c1.categoryChild" :key="c2.categoryId">
-                  <dt>
-                    <router-link :to="`/search?categoryName=${c2.categoryName}&categoryId=${c2.categoryId}`">{{c2.categoryName}}</router-link>
+                  <dt class="fore">
+                    <a href="javascript:" :data-categoryName="c2.categoryName" :data-category2Id="c2.categoryId">{{c2.categoryName}}</a>
+                    <!-- <router-link :to="`/search?categoryName=${c2.categoryName}&categoryId=${c2.categoryId}`">{{c2.categoryName}}</router-link> -->
                   </dt>
                   <dd>
                     <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                      <router-link :to="`/search?categoryName=${c3.categoryName}&categoryId=${c3.categoryId}`">{{c3.categoryName}}</router-link>
+                      <a href="javascript:" :data-categoryName="c3.categoryName" :data-category3Id="c3.categoryId">{{c3.categoryName}}</a>
+                      <!-- <router-link :to="`/search?categoryName=${c3.categoryName}&categoryId=${c3.categoryId}`">{{c3.categoryName}}</router-link> -->
                     </em>
                   </dd>
                 </dl>
@@ -44,6 +47,12 @@
 import {mapState} from 'vuex'
 export default {
   name: "TypeNav",
+  data(){
+    return{
+      currentIndex:-1,//需要显示字列表的分类项下标
+
+    }
+  },
   computed:{
     //方法一：
     // categoryList(){
@@ -54,6 +63,49 @@ export default {
     ...mapState({
       categoryList: state => state.home.categoryList
     })
+  },
+  methods:{
+    toSearch(event){
+      const target = event.target
+
+      //祛除data自定义属性值
+       const{categoryname,category1id,category2id,category3id} = target.dataset
+
+
+
+      if(categoryname){
+
+       //准备query参数
+        const query = {
+          categoryName:categoryname
+        }
+
+        if(category1id){
+          query.category1Id = category1id
+        }else if (category2id){
+          query.category2Id = category2id
+        }else if(category3id){
+          query.category3Id=category3id
+        }
+
+        console.log(query)
+
+        //跳转到search
+        this.$router.push({
+          name:'search',
+          query
+
+          }
+        )
+      }
+    },
+    showSubList(index){
+      console.log("@@@")
+      this.currentIndex = index
+      console.log(this.currentIndex)
+      console.log(index)
+    }
+
   }
 };
 </script>
@@ -168,7 +220,8 @@ export default {
             }
           }
 
-          &:hover {
+          &.active {
+            background:#ccc;
             .item-list {
               display: block;
             }
