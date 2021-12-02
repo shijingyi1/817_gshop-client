@@ -1,5 +1,6 @@
 <template>
     <div>
+        <TypeNav></TypeNav>
         <h2>serch组件</h2>
         <h3>{{$route.params.keyword}}</h3>
     </div>

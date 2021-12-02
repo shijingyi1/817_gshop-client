@@ -1,18 +1,10 @@
 <template>
   <div class="type-nav">
-    <div class="container">
-      <h2 class="all">全部商品分类</h2>
-      <nav class="nav">
-        <a href="###">服装城</a>
-        <a href="###">美妆馆</a>
-        <a href="###">尚品汇超市</a>
-        <a href="###">全球购</a>
-        <a href="###">闪购</a>
-        <a href="###">团购</a>
-        <a href="###">有趣</a>
-        <a href="###">秒杀</a>
-      </nav>
-      <div class="sort" @mouseleave="currentIndex=-1">
+    <div class="container" @mouseleave="currentIndex=-2" >
+      <div @mouseenter="showFirst" @mouseleave="hideFirst">
+        <h2 class="all">全部商品分类</h2>
+        <transition name="slide">
+        <div class="sort"  v-show="isShowFirst">
         <div class="all-sort-list2" @click="toSearch">
           <div class="item" v-for="(c1, index) in categoryList" :key="c1.categoryId" :class="{active:currentIndex===index}" @mouseenter="showSubList(index)">
             <h3>
@@ -38,6 +30,19 @@
           </div>
         </div>
       </div>
+      </transition>
+      </div>
+      <nav class="nav">
+        <a href="###">服装城</a>
+        <a href="###">美妆馆</a>
+        <a href="###">尚品汇超市</a>
+        <a href="###">全球购</a>
+        <a href="###">闪购</a>
+        <a href="###">团购</a>
+        <a href="###">有趣</a>
+        <a href="###">秒杀</a>
+      </nav>
+      
     </div>
   </div>
 </template>
@@ -45,11 +50,14 @@
 <script>
 
 import {mapState} from 'vuex'
+import throttle from 'lodash/throttle'
 export default {
   name: "TypeNav",
   data(){
     return{
-      currentIndex:-1,//需要显示字列表的分类项下标
+      //控制是否显示左侧菜单
+      isShowFirst:false,
+      currentIndex:-2,//需要显示字列表的分类项下标
 
     }
   },
@@ -63,6 +71,14 @@ export default {
     ...mapState({
       categoryList: state => state.home.categoryList
     })
+  },
+  created() {
+    const path = this.$route.path
+    if( path ==='/'){
+      this.isShowFirst = true
+    }
+
+
   },
   methods:{
     toSearch(event){
@@ -88,23 +104,47 @@ export default {
           query.category3Id=category3id
         }
 
-        console.log(query)
+        // console.log(query)
 
-        //跳转到search
-        this.$router.push({
+        //准备一个用于跳转的对象
+        const location ={
           name:'search',
-          query
+          query,
+          params:this.$route.params//需要携带上当前已有的params
 
           }
-        )
+
+        //跳转到search
+        this.$router.push(location)
       }
     },
-    showSubList(index){
-      console.log("@@@")
-      this.currentIndex = index
-      console.log(this.currentIndex)
-      console.log(index)
-    }
+
+    showFirst(){
+      this.currentIndex = -1;
+      this.isShowFirst = true;
+
+    },
+    hideFirst(){
+      this.currentIndex = -2;
+      // console.log(this.$route.path)
+      if(this.$route.path !== '/'){
+        this.isShowFirst = false;
+      }
+      
+    },
+    //节流函数
+    showSubList: throttle(function(index){
+      if(this.currentIndex !== -2){
+        this.currentIndex = index;
+      }
+      
+    },500),
+    // showSubList(index){
+    //   console.log("@@@")
+    //   this.currentIndex = index
+    //   console.log(this.currentIndex)
+    //   console.log(index)
+    // }
 
   }
 };
@@ -150,6 +190,20 @@ export default {
       position: absolute;
       background: #fafafa;
       z-index: 999;
+
+      // 指定过度的样式
+      &.slide-enter-active,&.slide-leave-active{
+        transition: all 1s
+      }
+      //指定隐藏时的样式
+      &.slide-enter,&.slide-leave-to{
+        opacity: 0;
+        height: 0;
+      }
+      // &.slide-leave,&.slide-enter-to{
+      //   opacity: 1;
+      //   height: 1;
+      // }
 
       .all-sort-list2 {
         .item {

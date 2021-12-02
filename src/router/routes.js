@@ -14,7 +14,7 @@ export default [{
     },
     {
         name: 'search',
-        path: '/search/:keyword',
+        path: '/search/:keyword?',
         component: Search
     },
     {
