@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import TypeNav from './components/TypeNav'
 
-
+import 'swiper/css/swiper.css'
 //不显示非生产环境打包提示
 Vue.config.productionTip = false
 

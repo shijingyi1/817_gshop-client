@@ -3,27 +3,21 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
+        <div class="swiper-container" ref="swiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="./images/banner1.jpg" />
+            <div class="swiper-slide" v-for="banner in bannerList" :key="banner.id">
+              <img :src="banner.imageUrl" />
             </div>
-            <!-- <div class="swiper-slide">
-              <img src="./images/banner2.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img src="./images/banner3.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img src="./images/banner4.jpg" />
-            </div> -->
           </div>
           <!-- 如果需要分页器 -->
           <div class="swiper-pagination"></div>
-
+      
           <!-- 如果需要导航按钮 -->
           <div class="swiper-button-prev"></div>
           <div class="swiper-button-next"></div>
+      
+          <!-- 如果需要滚动条 -->
+          <!-- <div class="swiper-scrollbar"></div> -->
         </div>
       </div>
       <div class="right">
@@ -100,8 +94,62 @@
 </template>
 
 <script>
+import Swiper from 'swiper'
+// import{mapState} from 'vuex'
+// import vuex from 'vuex'
+
 export default {
   name: "ListContainer",
+  computed:{
+    //获取轮播图URL方法一
+    bannerList(){
+      // console.log($store.state.home.bannerList)
+      return this.$store.state.home.bannerList
+    }
+    //获取轮播图URL方法二
+    // ...mapState({
+    //   bannerList : state => state.home.bannerList
+    // }),
+  },
+
+  mounted(){
+     
+  },
+  //列表数据已经有了，并且已经更新显示了
+  watch:{
+    bannerList(){
+
+
+      this.$nextTick(()=>{
+         var mySwiper = new Swiper (this.$refs.swiper, {
+    // direction: 'vertical', // 垂直切换选项
+    loop: true, // 循环模式选项
+    autoplay:{ //自动轮播
+    delay: 2000,
+    disableOnInteraction:false,//用户操作后是否停止轮播
+
+    },
+    
+    // 如果需要分页器
+    pagination: {
+      el: '.swiper-pagination',
+    },
+    
+    // 如果需要前进后退按钮
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    
+    // 如果需要滚动条
+    scrollbar: {
+      el: '.swiper-scrollbar',
+    },
+  })      
+      })
+    }
+
+  }
 };
 </script>
 

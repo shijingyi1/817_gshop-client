@@ -9,3 +9,6 @@ import ajax from './ajax';
 export function reqCategoryList() {
     return ajax.get('/product')
 }
+
+//获取首页广告轮播
+export const reqBannerList =() => ajax('banner')

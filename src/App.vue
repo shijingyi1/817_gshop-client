@@ -22,6 +22,8 @@ export default {
     // })
 
     this.$store.dispatch('getCatecoryList')
+    //轮播图数据
+    this.$store.dispatch('getBannerList')
   },
   components:{
     Header,
