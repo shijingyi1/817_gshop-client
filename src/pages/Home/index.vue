@@ -40,10 +40,7 @@ export default {
        ...mapState({
            floors:state => state.home.floors
        })
-    //    ,
-    //    ...mapState({
-    //        recommends:state=>state.home.recommends
-    //    })
+    
 }
 }
 </script>
